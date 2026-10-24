@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101b26"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Не гуляй">
-<meta name="description" content="Личный бюджет с характером: расходы, лимиты, накопления и зарплата.">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon-192.png"><link rel="apple-touch-icon" href="./icons/icon-192.png">
-<title>Не гуляй — личный бюджет</title><link rel="stylesheet" href="./style.css"></head>
+<meta name="theme-color" content="#071b27"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Qalta">
+<meta name="description" content="Qalta — личные финансы, расходы, накопления и цели.">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon-192.png?v=4"><link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>Qalta — твои деньги, твои правила</title><link rel="stylesheet" href="./style.css"></head>
 <body><div id="app">
-<header class="topbar"><div class="brand"><span class="brand-mark">₸</span><div><strong>НЕ ГУЛЯЙ</strong><small>твой финансовый кореш</small></div></div><button id="settingsBtn" class="icon-btn" aria-label="Настройки">⚙</button></header>
+<header class="topbar"><div class="brand"><span class="brand-mark"><img src="./icons/icon-192.png" alt="" width="44" height="44"></span><div><strong>Qalta</strong><small>деньги под контролем</small></div></div><button id="settingsBtn" class="icon-btn" aria-label="Настройки">⚙</button></header>
 <main class="wrap">
 <section class="hero"><div class="hero-caption">ДОСТУПНО СЕЙЧАС <span id="todayLabel"></span></div><div class="balance"><span id="balanceValue">0 ₸</span></div><div class="hero-sub" id="balanceHint">Сначала укажи стартовый баланс</div><div class="hero-bottom"><div><small>До зарплаты · <span id="paydayDateLabel"></span></small><strong id="daysValue">— дней</strong></div><div class="hero-line"></div><div><small>Потрачено в месяце</small><strong id="spentValue">0 ₸</strong></div></div></section>
 <section class="mood"><span class="mood-avatar" id="moodEmoji">🌱</span><div class="mood-content"><small class="quote-lang" id="quoteLang">ҚАЗ</small><strong id="moodTitle">Бережливость — это свобода выбора.</strong><p id="moodText">Каждый день — новая мысль о деньгах.</p></div><button type="button" id="quoteNextBtn" class="quote-next" aria-label="Другая мысль">↻</button></section>

@@ -16,3 +16,31 @@
 .savings-category{border-color:#3c625c;background:linear-gradient(145deg,#193730,#162b30)}
 .savings-category .progress-fill{background:#85d9bb}
 .category-info{line-height:1.45}
+
+/* Qalta brand v4 — premium teal and gold */
+:root{color:#edf9fa;background:#07131e;--muted:#9db6be;--card:#122633;--stroke:#274655;--lime:#f3c96b}
+body{background:radial-gradient(ellipse at 90% 0%,#103e4a 0%,transparent 45%),#07131e}
+.brand{gap:12px}.brand-mark{transform:none;width:48px;height:48px;background:none;border-radius:15px;overflow:hidden;box-shadow:0 4px 22px #00d7d82c}
+.brand-mark img{width:100%;height:100%;object-fit:cover}.brand strong{font-size:21px;font-weight:850;letter-spacing:-.6px;color:#fff5d9}.brand small{font-size:10px;color:#b7d5dc;letter-spacing:.3px}
+.topbar{height:90px}.icon-btn{background:#102b39;border-color:#29515b;color:#ffdfa0}
+.hero{background:radial-gradient(circle at 85% -15%,#178a8a88,transparent 58%),linear-gradient(145deg,#123746,#061725 64%,#143f46);border:1px solid #428b8a77;color:#fff;box-shadow:0 22px 50px #0007,0 0 30px #00b4ad14}
+.hero:before{border-color:#f6dca523}.hero:after{content:'Q';color:#e4b45b;opacity:.105;right:-5px;font-size:220px}
+.hero-caption,.hero-bottom small{color:#a8d6db}.balance{color:#fff8e9;text-shadow:0 6px 24px #0007}
+.hero-bottom{border-color:#d1a65752}.hero-line{background:#d1a65752}
+.mood{background:linear-gradient(145deg,#142c39,#0e2430);border-color:#325660}
+.quote-lang{color:#efc875}.quote-next{background:#1d3b49;border-color:#467079;color:#f4d48e}
+.category{background:linear-gradient(150deg,#173140,#10212e);border-color:#284553}
+.category:hover{border-color:#6caaaa}.category-pct{color:#9dced1}.category-value{color:#fff5df}
+.progress{background:#244451}.progress-fill{background:linear-gradient(90deg,#00b3b1,#f2ce7c)}
+.savings-category{background:linear-gradient(140deg,#173d3e,#142b35);border-color:#346d6b}
+.savings-category .progress-fill{background:linear-gradient(90deg,#16ad9f,#e5bd6b)}
+.mini-card,.transactions{background:linear-gradient(155deg,#17303d,#0e202c);border-color:#2c4b59}
+.mini-card strong{color:#fff7e8}.tx-icon{background:#20414b}
+.bottom-nav{background:#081a26f2;border-color:#30515c}.bottom-nav button.active{color:#ffd88f}
+.bottom-nav .add-fab,.btn:not(.secondary):not(.danger){background:linear-gradient(135deg,#ffe2a0,#dba74f);color:#152b30}
+.bottom-nav .add-fab{box-shadow:0 7px 28px #edb85b57}
+.link-btn,.positive{color:#f4cd78}.modal-sheet{background:#102531;border-color:#3c626a}
+.field input,.field select,.field textarea{background:#091c27;border-color:#3b5e68}
+.field input:focus,.field select:focus{border-color:#e9c06e}
+.notice{border-color:#d8ac54;background:#1b343b}.toast{background:#ffe3a5;color:#19313b}
+.create-icon{background:#24515a;color:#f8d68b}.create-category{border-color:#4b7d7b}
