@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101b26"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Не гуляй">
+<meta name="description" content="Личный бюджет с характером: расходы, лимиты, накопления и зарплата.">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon-192.png"><link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>Не гуляй — личный бюджет</title><link rel="stylesheet" href="./style.css"></head>
+<body><div id="app">
+<header class="topbar"><div class="brand"><span class="brand-mark">₸</span><div><strong>НЕ ГУЛЯЙ</strong><small>твой финансовый кореш</small></div></div><button id="settingsBtn" class="icon-btn" aria-label="Настройки">⚙</button></header>
+<main class="wrap">
+<section class="hero"><div class="hero-caption">ДОСТУПНО СЕЙЧАС <span id="todayLabel"></span></div><div class="balance"><span id="balanceValue">0 ₸</span></div><div class="hero-sub" id="balanceHint">Сначала укажи стартовый баланс</div><div class="hero-bottom"><div><small>До зарплаты</small><strong id="daysValue">— дней</strong></div><div class="hero-line"></div><div><small>Потрачено в месяце</small><strong id="spentValue">0 ₸</strong></div></div></section>
+<section class="mood"><span class="mood-avatar" id="moodEmoji">😎</span><div><strong id="moodTitle">Считаем денежки</strong><p id="moodText">Заноси покупки — я скажу, когда пора притормозить.</p></div></section>
+<div class="section-heading"><h2>Твои конверты</h2><span id="periodLabel"></span></div>
+<section id="categoryGrid" class="category-grid"></section>
+<div class="section-heading"><h2>Деньги по полочкам</h2></div>
+<section class="mini-grid"><article class="mini-card"><span>💰</span><small>Доход за месяц</small><strong id="incomeValue">0 ₸</strong><em id="incomePlan">план 0 ₸</em></article><article class="mini-card"><span>🐿️</span><small>Сбережения</small><strong id="savingsValue">0 ₸</strong><em>отложено отдельно</em></article><article class="mini-card"><span>📈</span><small>Акции</small><strong id="stocksValue">0 ₸</strong><em>выделено на инвестиции</em></article><article class="mini-card"><span>🧾</span><small>Остаток рассрочек</small><strong id="debtValue">0 ₸</strong><em id="debtCount">нет рассрочек</em></article></section>
+<div class="section-heading"><h2>Последние движения</h2><button id="allTransactions" class="link-btn">Все →</button></div><section class="transactions" id="txList"></section>
+</main>
+<nav class="bottom-nav" aria-label="Навигация"><button data-tab="home" class="active">⌂<span>Главная</span></button><button data-tab="history">▤<span>История</span></button><button id="addBtn" class="add-fab" aria-label="Добавить операцию">+</button><button data-tab="debts">▱<span>Долги</span></button><button data-tab="settings">⚙<span>Настройки</span></button></nav>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-backdrop" data-close="1"></div><div class="modal-sheet"><div class="sheet-handle"></div><div class="sheet-head"><h2 id="modalTitle">Добавить</h2><button class="x-btn" data-close="1" aria-label="Закрыть">×</button></div><div id="modalContent"></div></div></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div></div><script src="./app.js" defer></script></body></html>
