@@ -44,3 +44,38 @@ body{background:radial-gradient(ellipse at 90% 0%,#103e4a 0%,transparent 45%),#0
 .field input:focus,.field select:focus{border-color:#e9c06e}
 .notice{border-color:#d8ac54;background:#1b343b}.toast{background:#ffe3a5;color:#19313b}
 .create-icon{background:#24515a;color:#f8d68b}.create-category{border-color:#4b7d7b}
+
+/* Qalta Analytics v5 */
+.report-content{display:flex;flex-direction:column;gap:14px;padding-bottom:20px}
+.report-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.report-stat{display:flex;flex-direction:column;min-width:0;gap:8px;padding:15px 12px;background:linear-gradient(145deg,#193945,#102632);border:1px solid #2b505c;border-radius:16px}
+.report-stat small{font-size:11px;color:#bdd2d9}.report-stat strong{font-size:clamp(16px,4.5vw,21px);overflow-wrap:anywhere;color:#f9e9bc}
+.report-stat strong.positive{color:#75d9c0}.report-stat strong.negative{color:#ff9f8d}
+.report-section-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:9px}
+.report-section-head h3{margin:0;font-size:16px}.report-section-head small{font-size:11px;color:#f5cf81}
+.report-note{margin:0;color:#90abb8;line-height:1.55;font-size:11px}
+.report-chart-key{display:flex;flex-wrap:wrap;gap:14px;color:#a9c6d0;font-size:11px}
+.report-chart-key span{display:flex;align-items:center;gap:5px}.report-chart-key i{display:inline-block;width:8px;height:8px;border-radius:50%}
+.income-dot{background:#5bd6bb}.expense-dot{background:#f4c36a}
+.report-chart{height:178px;display:flex;gap:5px;justify-content:space-between;align-items:stretch;background:linear-gradient(180deg,#193441,#0d2330);border:1px solid #294e5b;border-radius:16px;padding:12px 10px 11px}
+.report-bar-column{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px}
+.report-bar-track{height:136px;display:flex;align-items:end;justify-content:center;gap:3px;flex:1;width:100%;border-bottom:1px solid #41616f}
+.report-bar{width:36%;max-width:15px;min-width:5px;border-radius:5px 5px 0 0;transition:height .25s}
+.report-bar-income{background:linear-gradient(#78e6c8,#23998d)}
+.report-bar-expense{background:linear-gradient(#ffdb90,#b47d3e)}
+.report-bar-column>span{font-size:10px;color:#a9c4cb;white-space:nowrap}
+.report-split{display:flex;justify-content:space-between;flex-wrap:wrap;gap:7px;font-size:11px;color:#c2d6da}
+.report-split b{color:#f7dfa7}
+.report-category-list{display:flex;flex-direction:column;gap:12px}
+.report-category{display:flex;flex-direction:column;gap:6px;background:#132c39;border:1px solid #294956;padding:12px;border-radius:13px}
+.report-category-line{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}
+.report-category-line strong{color:#f3d38c;white-space:nowrap}
+.report-progress{background:#244955;height:6px;border-radius:9px;overflow:hidden}
+.report-progress span{display:block;height:100%;background:linear-gradient(90deg,#29bfaa,#f0c36c);border-radius:9px}
+.report-category small{font-size:10px;color:#a3bbc4}
+.report-tips{display:flex;flex-direction:column;gap:9px}
+.report-tip{display:flex;gap:11px;padding:13px 11px;border-radius:14px;background:#142e39;border:1px solid #315260}
+.report-tip>span{font-size:22px}.report-tip strong{font-size:12px;color:#f1d89f}
+.report-tip p{font-size:11px;line-height:1.55;color:#bfd0d8;margin:5px 0 0}
+.segment{flex-wrap:wrap}.segment button{flex:1 1 26%}
+@media(max-width:350px){.report-chart{padding-left:6px;padding-right:6px}.report-bar-track{gap:2px}.report-stat{padding:12px 9px}}

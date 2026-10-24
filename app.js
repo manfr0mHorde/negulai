@@ -80,8 +80,84 @@ el('settingsForm').onsubmit=e=>{e.preventDefault();const values=['opening','sala
 el('exportBtn').onclick=exportData;el('importFile').onchange=importData;el('resetBtn').onclick=()=>{if(confirm('Точно удалить все операции, долги и планы? Сначала сохрани резервную копию!')){state=DEFAULT();save();closeModal();notify('Данные очищены')}}}
 function debts(){openModal('Мои рассрочки',`<div class="panel"><div class="detail-row"><span>Всего осталось выплатить</span><strong>${money(debtTotal())}</strong></div></div><div class="stack">${state.debts.map(d=>`<div class="panel"><div class="detail-row"><strong>${esc(d.name)}</strong><strong>${money(due(d))}</strong></div><div class="detail-row"><span>Первоначально</span><span>${money(d.principal)}</span></div><div class="detail-row"><span>Плановый платёж / мес.</span><strong>${money(d.monthly||0)}</strong></div><div class="btn-row"><button class="btn secondary" data-pay="${esc(d.id)}">Оплатить</button><button class="btn danger" data-remove-debt="${esc(d.id)}">Удалить</button></div></div>`).join('')||'<div class="empty">Пока нет рассрочек. Отличная новость! ✨</div>'}</div><button class="btn" id="newDebt" style="width:100%;margin-top:12px">+ Добавить рассрочку</button><p class="hint" style="margin-top:12px">Здесь вводится оставшийся долг на момент начала учёта. Погашения уменьшают долг и текущий баланс.</p>`);el('newDebt').onclick=newDebt;document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>{const id=b.dataset.pay;closeModal();openAdd();document.querySelector('[data-mode="debt"]').click();el('cat').value=id});document.querySelectorAll('[data-remove-debt]').forEach(b=>b.onclick=()=>{const d=state.debts.find(x=>x.id===b.dataset.removeDebt);if(!confirm(`Удалить «${d.name}»? Связанные платежи останутся в истории и балансе.`))return;state.debts=state.debts.filter(x=>x.id!==d.id);save();debts()})}
 function newDebt(){openModal('Добавить рассрочку',`<form class="form" id="debtForm">${field('Название','debtName','','text','required placeholder="Например: iPhone"')}${field('Остаток задолженности, ₸','principal','','number','required')}${field('Плановый платёж в месяц, ₸','monthly','','number')}<button class="btn">Добавить рассрочку</button></form>`);el('debtForm').onsubmit=e=>{e.preventDefault();const name=el('debtName').value.trim(),principal=Number(el('principal').value),monthly=Number(el('monthly').value||0);if(!name||!validMoney(principal)||principal<=0||!validMoney(monthly))return notify('Проверь данные рассрочки');state.debts.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,principal,monthly});save();debts();notify('Рассрочка добавлена')}}
+
+/* Qalta Analytics v5: computed locally from recorded transactions, no third-party services. */
+function shiftMonth(key,step){const [year,month]=key.split('-').map(Number);const date=new Date(year,month-1+step,1,12);return dateISO(date).slice(0,7)}
+function reportMonths(){const out=new Set();for(let i=0;i<12;i++)out.add(shiftMonth(currentMonth(),-i));for(const t of state.transactions){if(typeof t.date==='string'&&/^\d{4}-\d{2}/.test(t.date)&&t.date.slice(0,7)<=currentMonth())out.add(t.date.slice(0,7))}return [...out].sort().reverse()}
+function reportMonthName(key){const [y,m]=key.split('-').map(Number);return new Date(y,m-1,1,12).toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}
+function reportData(month){
+  const transactions=state.transactions.filter(t=>monthKey(t.date)===month);
+  const sumType=type=>total(transactions.filter(t=>t.type===type).map(t=>Number(t.amount)||0));
+  const income=sumType('income'),expenses=sumType('expense'),debts=sumType('debt'),saved=sumType('transfer')-sumType('release');
+  const categories=new Map();
+  for(const t of transactions){if(t.type!=='expense')continue;const id=t.category||'other';const old=categories.get(id)||0;categories.set(id,old+(Number(t.amount)||0))}
+  return {month,income,expenses,debts,saved,spent:expenses+debts,free:income-expenses-debts-saved,transactions:transactions.length,categories:[...categories].map(([id,amount])=>({id,amount,name:category(id)?.name||'Неизвестная категория',icon:category(id)?.icon||'🧩'})).sort((a,b)=>b.amount-a.amount)};
+}
+function reportAdvice(period,rec){
+  const advice=[];
+  if(rec.transactions===0)return [{icon:'📭',title:'Пока нет операций',message:'Добавь доходы и расходы — тогда Qalta сможет показать закономерности.'}];
+  const current=period===currentMonth();
+  if(rec.income>0&&rec.spent>rec.income)advice.push({icon:'🚨',title:'Расходов больше, чем доходов',message:'Разница '+money(rec.spent-rec.income)+'. Проверь крупные покупки и обязательные платежи.'});
+  if(current){
+    for(const c of state.categories.filter(c=>!c.archived&&c.kind==='limit'&&c.amount>0)){
+      const spent=rec.categories.find(x=>x.id===c.id)?.amount||0,percentage=spent/c.amount;
+      if(percentage>1)advice.push({icon:'🛑',title:'Перерасход: '+c.name,message:'Потрачено '+money(spent)+' при лимите '+money(c.amount)+'. Превышение '+money(spent-c.amount)+'.'});
+      else if(percentage>=.8)advice.push({icon:'⚠️',title:'Лимит почти исчерпан: '+c.name,message:'Использовано '+Math.round(percentage*100)+'% лимита. До конца месяца осталось '+money(c.amount-spent)+'.'});
+    }
+  }
+  if(rec.categories.length&&rec.expenses>0){
+    const top=rec.categories[0],share=Math.round(top.amount/rec.expenses*100);
+    advice.push({icon:'🔎',title:'Самая крупная статья расходов',message:top.name+' — '+money(top.amount)+' ('+share+'% обычных покупок). Проверь, можно ли уменьшить именно её.'});
+  }
+  if(rec.income>0&&rec.saved>0)advice.push({icon:'🌱',title:'Хорошо откладываешь',message:'На цели направлено '+Math.round(rec.saved/rec.income*100)+'% месячного дохода. Это чистая сумма после возвратов из конвертов.'});
+  if(rec.debts>0)advice.push({icon:'🧾',title:'Платежи по рассрочкам',message:'В этом месяце выплачено '+money(rec.debts)+'. Рассрочки учитываются отдельно от покупок, чтобы не считать их дважды.'});
+  if(rec.income===0)advice.push({icon:'💸',title:'Доходы не записаны',message:'В этом месяце нет внесённых поступлений. Без них нельзя корректно оценить долю расходов в доходе.'});
+  if(!current)advice.push({icon:'📅',title:'Исторические данные',message:'Для прошлых месяцев Qalta не сравнивает траты с нынешними лимитами: старые значения лимитов не сохранялись по месяцам.'});
+  else advice.push({icon:'🧭',title:'Месяц ещё идёт',message:'Итоги текущего месяца предварительные. Не сравнивай неполный месяц с полным без поправки на дни.'});
+  return advice.slice(0,6);
+}
+function showAnalytics(month=currentMonth()){
+  const months=reportMonths();if(!months.includes(month))month=months[0]||currentMonth();
+  const data=reportData(month),prev=reportData(shiftMonth(month,-1));
+  const option=months.map(m=>'<option value="'+m+'"'+(m===month?' selected':'')+'>'+esc(reportMonthName(m))+'</option>').join('');
+  const six=Array.from({length:6},(_,i)=>shiftMonth(month,i-5)).map(reportData);
+  const max=Math.max(1,...six.flatMap(v=>[v.income,v.spent]));
+  const bars=six.map(v=>{
+    const inc=Math.max(0,Math.min(100,v.income/max*100)),out=Math.max(0,Math.min(100,v.spent/max*100));
+    const label=new Date(Number(v.month.slice(0,4)),Number(v.month.slice(5,7))-1,1,12).toLocaleDateString('ru-RU',{month:'short'});
+    const caption=reportMonthName(v.month)+': доход '+money(v.income)+', расход '+money(v.spent);
+    return '<div class="report-bar-column" title="'+esc(caption)+'"><div class="report-bar-track"><div class="report-bar report-bar-income" style="height:'+inc+'%"></div><div class="report-bar report-bar-expense" style="height:'+out+'%"></div></div><span>'+esc(label)+'</span></div>'
+  }).join('');
+  const rows=data.categories.map(c=>{
+    const part=data.expenses>0?c.amount/data.expenses*100:0;
+    return '<div class="report-category"><div class="report-category-line"><span>'+esc(c.icon)+' '+esc(c.name)+'</span><strong>'+money(c.amount)+'</strong></div><div class="report-progress"><span style="width:'+Math.max(0,Math.min(100,part))+'%"></span></div><small>'+Math.round(part)+'% расходов на покупки</small></div>'
+  }).join('');
+  const tips=reportAdvice(month,data).map(a=>'<article class="report-tip"><span>'+esc(a.icon)+'</span><div><strong>'+esc(a.title)+'</strong><p>'+esc(a.message)+'</p></div></article>').join('');
+  const difference=data.spent-prev.spent;
+  const comparison=data.month===currentMonth()?'В этом месяце данные ещё неполные.':prev.spent===0?'В предыдущем месяце расходов не записано.':'По сравнению с прошлым месяцем: '+(difference>0?'больше на ':difference<0?'меньше на ':'без изменений · ')+money(Math.abs(difference))+'.';
+  openModal('Статистика Qalta','<div class="report-content"><div class="field"><label for="reportMonth">Месяц</label><select id="reportMonth">'+option+'</select></div><div class="report-summary">'+
+    '<div class="report-stat"><small>↗ Доходы</small><strong class="positive">'+money(data.income)+'</strong></div>'+
+    '<div class="report-stat"><small>↘ Расходы</small><strong>'+money(data.spent)+'</strong></div>'+
+    '<div class="report-stat"><small>🐿️ Отложено (чистыми)</small><strong>'+money(data.saved)+'</strong></div>'+
+    '<div class="report-stat"><small>⚖️ Денежный поток</small><strong class="'+(data.free>=0?'positive':'negative')+'">'+money(data.free)+'</strong></div></div>'+
+    '<p class="report-note">Денежный поток = доходы − покупки − платежи по рассрочкам − чистые накопления. Начальный баланс не считается доходом.</p>'+
+    '<div class="report-section-head"><h3>Последние 6 месяцев</h3></div>'+
+    '<div class="report-chart-key"><span><i class="income-dot"></i>Доходы</span><span><i class="expense-dot"></i>Расходы, включая рассрочки</span></div>'+
+    '<div class="report-chart" role="img" aria-label="График доходов и расходов за шесть месяцев">'+bars+'</div>'+
+    '<p class="report-note">'+esc(comparison)+'</p>'+
+    '<div class="report-section-head"><h3>На что ушли деньги</h3></div>'+
+    '<div class="report-split"><span>Покупки: <b>'+money(data.expenses)+'</b></span><span>Рассрочки: <b>'+money(data.debts)+'</b></span></div>'+
+    '<div class="report-category-list">'+(rows||'<div class="empty">В этом месяце пока нет расходов по категориям.</div>')+'</div>'+
+    '<div class="report-section-head"><h3>💡 Qalta Insights</h3><small>Локальные подсказки</small></div>'+
+    '<div class="report-tips">'+tips+'</div>'+
+    '<p class="report-note">Это автоматический анализ по правилам, а не облачный ИИ. Данные остаются на устройстве и не отправляются сторонним сервисам.</p>'+
+    '<button class="btn secondary" id="reportHistory" type="button">Посмотреть всю историю операций</button></div>');
+  el('reportMonth').onchange=e=>showAnalytics(e.target.value);
+  el('reportHistory').onclick=history;
+}
+
 function history(){const list=[...state.transactions].sort((a,b)=>b.date.localeCompare(a.date)||b.created.localeCompare(a.created));openModal('История операций',`<div class="notice" style="margin-bottom:14px">Удаление записи пересчитает баланс, бюджет и долг. Для исправления ошибочной операции удали её и добавь заново.</div><div class="stack">${list.map(t=>`<div class="history-row"><div><strong>${esc(t.note||txTitle(t))}</strong><small>${esc(t.date)} · ${esc(txTitle(t))}</small></div><div style="text-align:right"><strong class="${['income','release'].includes(t.type)?'positive':'negative'}">${['income','release'].includes(t.type)?'+':'−'}${money(t.amount)}</strong><br><button class="text-btn" data-del-tx="${esc(t.id)}">Удалить</button></div></div>`).join('')||'<div class="empty">Операций пока нет</div>'}</div>`);document.querySelectorAll('[data-del-tx]').forEach(b=>b.onclick=()=>{if(!confirm('Удалить эту операцию?'))return;state.transactions=state.transactions.filter(t=>t.id!==b.dataset.delTx);save();history();notify('Операция удалена')})}
 function exportData(){const content=JSON.stringify(state,null,2),blob=new Blob([content],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ne-gulyai-backup-${today()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Сохрани копию в «Файлы» ✅')}
 function normalizeBackup(p){const d=migrate(p);if(!validMoney(d.opening)||!validDate(d.paydayDate)||!d.planned||['salary','stipend','extra'].some(k=>!validMoney(d.planned[k])))throw Error('settings');for(const c of d.categories){if(!c.id||!c.name||!validMoney(c.amount)||!['limit','fixed','target'].includes(c.kind))throw Error('category')}for(const t of d.transactions){if(!t.id||!['income','expense','transfer','release','debt'].includes(t.type)||!validMoney(t.amount)||Number(t.amount)<=0||!validDate(t.date))throw Error('transaction')}for(const debt of d.debts){if(!debt.id||!debt.name||!validMoney(debt.principal)||!validMoney(debt.monthly))throw Error('debt')}return d}
 async function importData(event){const file=event.target.files[0];if(!file)return;try{if(file.size>5*1024*1024)throw Error('size');const parsed=normalizeBackup(JSON.parse(await file.text()));if(!confirm('Заменить все текущие данные содержимым резервной копии?'))return;localStorage.setItem(KEY,JSON.stringify(parsed));state=parsed;render();closeModal();notify('Резервная копия восстановлена')}catch(e){notify('Не удалось восстановить копию: проверь файл и свободное место')}}
-el('addBtn').onclick=()=>openAdd();el('settingsBtn').onclick=settings;el('quoteNextBtn').onclick=()=>{quoteOffset++;render()};el('allTransactions').onclick=history;document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='history')history();else if(b.dataset.tab==='debts')debts();else if(b.dataset.tab==='settings')settings();else{closeModal();window.scrollTo({top:0,behavior:'smooth'})}});el('modal').addEventListener('click',e=>{if(e.target.dataset.close)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});render();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+el('addBtn').onclick=()=>openAdd();el('settingsBtn').onclick=settings;el('quoteNextBtn').onclick=()=>{quoteOffset++;render()};el('allTransactions').onclick=history;document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='analytics')showAnalytics();else if(b.dataset.tab==='history')history();else if(b.dataset.tab==='debts')debts();else if(b.dataset.tab==='settings')settings();else{closeModal();window.scrollTo({top:0,behavior:'smooth'})}});el('modal').addEventListener('click',e=>{if(e.target.dataset.close)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});render();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
