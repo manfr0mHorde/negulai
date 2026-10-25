@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#6c6a1f">
+  <meta name="description" content="Демонстрация цветочной онлайн-витрины Secret Garden Astana: каталог, оформление заказа и кабинет флориста.">
+  <title>Secret Garden — цветы с заботой · демо</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./assets/secret-garden-logo.png" type="image/png">
+  <link rel="stylesheet" href="./style.css?v=2">
+</head>
+<body>
+<div class="demo-ribbon">ДЕМОНСТРАЦИОННЫЙ ПРОЕКТ <span>•</span> Неофициальное демо · цены и товары примерные</div>
+<header class="header" id="top">
+  <div class="header-inner">
+    <a class="identity" href="#" id="brandHome" aria-label="Secret Garden — главная">
+      <img class="brand-icon" src="./assets/secret-garden-logo.png" alt="Логотип Secret Garden" width="46" height="46">
+      <span class="identity-text"><strong>SECRET GARDEN</strong><small>ASTANA · FLOWER ATELIER</small></span>
+    </a>
+    <nav class="view-toggle" aria-label="Выбор режима">
+      <button id="buyerTab" class="view-btn selected" type="button">Для покупателей</button>
+      <button id="sellerTab" class="view-btn" type="button">Кабинет флориста <span class="lock-hint">✦</span></button>
+    </nav>
+    <button class="cart-link" id="cartNav" type="button" aria-label="Открыть корзину"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.2 11h11l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span id="cartCount">0</span></button>
+  </div>
+</header>
+<main>
+  <section id="buyerView">
+    <div class="hero shell">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-line"></span> SECRET GARDEN · АСТАНА</span>
+        <h1>У каждого<br>букета — <em>своя</em><br>история.</h1>
+        <p>По любви. Со вкусом. 🌿 Цветы, которые помогают сказать самое важное. Выберите букет — детали мы уточним вместе.</p>
+        <div class="hero-actions"><a href="#catalog" class="btn btn-dark">Выбрать букет <span>↗</span></a><a href="https://www.instagram.com/secretgardenastana/" target="_blank" rel="noopener noreferrer" class="quiet-link">Наш Instagram ↗</a></div>
+        <div class="hero-trust"><span>✿ С любовью собраны</span><span>✿ Доставка по Астане</span></div>
+      </div>
+      <div class="hero-media"><img src="./assets/ig-flower-mix.webp" alt="Цветочная композиция из Instagram Secret Garden" loading="eager" onerror="this.style.opacity='0'"><div class="hero-frame"></div><div class="hero-bubble"><span>✦</span> Цветы с характером.<br> Подарки с чувствами.</div><div class="hero-media-label">a little garden of feelings</div></div>
+      <div class="hero-num">FLOWERS · FEELINGS · ASTANA</div>
+    </div>
+    <section class="perks shell"><div><span class="perk-icon">✧</span><div><strong>Букеты на сегодня</strong><small>Готовые композиции</small></div></div><div><span class="perk-icon">❀</span><div><strong>Ваш особенный букет</strong><small>Создадим под заказ</small></div></div><div><span class="perk-icon">♡</span><div><strong>Доставка с заботой</strong><small>Время согласуем с вами</small></div></div></section>
+    <section class="catalog shell" id="catalog">
+      <div class="section-intro"><div><span class="eyebrow">НАША КОЛЛЕКЦИЯ</span><h2>Букеты с <em>настроением</em></h2><p>Небольшая подборка для демонстрации. Финальные цены и наличие уточняются у флориста.</p></div><div class="catalog-flower">✽</div></div>
+      <div class="catalog-tools"><div class="filters" role="group" aria-label="Тип букета"><button class="filter active" data-filter="all">Все букеты</button><button class="filter" data-filter="ready">Готовые сегодня</button><button class="filter" data-filter="custom">Под заказ</button></div><label class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Поиск букета..." aria-label="Поиск по каталогу"></label></div>
+      <div id="productGrid" class="product-grid"></div>
+      <div class="catalog-note"><span>♡</span><div><strong>Не нашли букет своей мечты?</strong><p>Расскажите нам о желаемых цветах, оттенках и бюджете — флорист поможет с подбором.</p></div><button id="customRequest" class="btn btn-outline">Заказать индивидуально ↗</button></div>
+    </section>
+    <section class="closing"><div class="shell closing-inner"><div><span class="eyebrow">SECRET GARDEN ASTANA</span><h2>Дарите чувства.<br><em>Мы позаботимся о цветах.</em></h2><p>Уточним наличие, соберём заказ и согласуем доставку в WhatsApp.</p></div><a href="#catalog" class="btn btn-light">Смотреть коллекцию ↗</a></div></section>
+  </section>
+  <section id="sellerView" class="seller hidden"><div class="shell seller-shell">
+    <div class="seller-heading"><div><span class="eyebrow">ПРОСТРАНСТВО ФЛОРИСТА</span><h1>Управление <em>витриной</em></h1><p>Демонстрационный кабинет: редактирование букетов, заявки и статистика — в этом браузере. Покупатели с других устройств изменений не увидят.</p></div><button id="resetDemo" type="button" class="text-action">↻ Сбросить демо</button></div>
+    <div class="seller-tabs"><button class="seller-tab selected" data-panel="overview">Обзор</button><button class="seller-tab" data-panel="products">Букеты</button><button class="seller-tab" data-panel="orders">Заявки</button><button class="seller-tab" data-panel="settings">Настройки</button></div>
+    <div id="overviewPanel" class="seller-panel"></div>
+    <div id="productsPanel" class="seller-panel hidden"></div>
+    <div id="ordersPanel" class="seller-panel hidden"></div>
+    <div id="settingsPanel" class="seller-panel hidden"></div>
+  </div></section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><div class="footer-brand">SECRET GARDEN ASTANA <span>✳</span></div><p>Цветочная витрина · демонстрация возможностей</p><small>Неофициальный демонстрационный проект. Примерные товары и цены; не является официальным магазином.</small></div><div class="footer-links"><a href="https://www.instagram.com/secretgardenastana/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="#top">Наверх ↑</a></div></div></footer>
+<div class="cart-bar hidden" id="cartBar"><span><strong id="floatingTotal">0 ₸</strong><small id="floatingCount">0 букетов</small></span><button id="floatingCart" class="btn btn-dark">Оформить заказ ↗</button></div>
+<div class="overlay hidden" id="overlay" aria-hidden="true"><div class="scrim" data-close></div><div class="drawer" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="drawer-top"><div><span class="eyebrow">SECRET GARDEN</span><h2 id="dialogTitle">Ваш заказ</h2></div><button id="closeOverlay" aria-label="Закрыть" class="close-icon">×</button></div><div class="drawer-content" id="dialogContent"></div></div></div>
+<div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+<script src="./app.js?v=2" defer></script>
+</body>
+</html>
