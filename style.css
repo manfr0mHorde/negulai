@@ -121,3 +121,7 @@ body{background:radial-gradient(ellipse at 90% 0%,#103e4a 0%,transparent 45%),#0
 .report-loan-flow>span{background:#173440;border:1px solid #2d535f;padding:10px 12px;border-radius:12px;font-size:11px;color:#bed2d7;flex:1}
 .report-loan-flow b{color:#f6d490}
 @media(max-width:370px){.loan-entry-sum{flex-direction:column;align-items:start;gap:1px}.loan-entry-sum strong{font-size:18px}.loan-entry-top strong{font-size:14px}.loan-actions .btn{flex:1}}
+
+/* Loan card typography has precedence over generic mini-card icon spans. */
+.mini-card.loan-mini>.loan-mini-arrow{font-size:11px;margin:0;line-height:1.2}
+.mini-card.loan-mini>.loan-mini-icon{font-size:23px;margin-bottom:5px}
