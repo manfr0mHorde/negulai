@@ -79,3 +79,45 @@ body{background:radial-gradient(ellipse at 90% 0%,#103e4a 0%,transparent 45%),#0
 .report-tip p{font-size:11px;line-height:1.55;color:#bfd0d8;margin:5px 0 0}
 .segment{flex-wrap:wrap}.segment button{flex:1 1 26%}
 @media(max-width:350px){.report-chart{padding-left:6px;padding-right:6px}.report-bar-track{gap:2px}.report-stat{padding:12px 9px}}
+
+/* Qalta v6 — personal loans lent to friends and family */
+.loan-mini{grid-column:1/-1;cursor:pointer;align-items:flex-start;text-align:left;position:relative;font:inherit;color:inherit;background:linear-gradient(130deg,#173b43,#102734 67%,#12333d);border-color:#347275}
+.loan-mini:focus-visible{outline:2px solid #f3cc79;outline-offset:3px}
+.loan-mini:hover{border-color:#83b9a8}
+.loan-mini .loan-mini-icon{margin-bottom:5px}
+.loan-mini small{font-size:12px}
+.loan-mini strong{font-size:24px}
+.loan-mini em{font-size:11px}
+.loan-mini-arrow{position:absolute;right:16px;bottom:16px;color:#f1ce87;font-size:11px;font-weight:700}
+.loan-summary{padding:19px;background:radial-gradient(circle at 88% 0%,#226e6988,transparent 60%),linear-gradient(140deg,#143c47,#10212c);border:1px solid #386b6b;border-radius:20px;display:flex;flex-direction:column;gap:5px}
+.loan-summary small{font-size:12px;color:#b7d8d4}
+.loan-summary strong{font-size:clamp(27px,8vw,37px);font-weight:850;letter-spacing:-.7px;color:#ffde9a;overflow-wrap:anywhere}
+.loan-summary span{font-size:12px;color:#9ec5c6}
+.loan-new{width:100%;margin-top:12px}
+.loan-explainer{margin:12px 0 6px}
+.loan-section-caption{font-size:13px;font-weight:750;color:#e8ce95;margin:22px 0 10px}
+.loan-list{display:flex;flex-direction:column;gap:10px}
+.loan-entry{padding:15px;background:linear-gradient(145deg,#193440,#10242f);border:1px solid #31525e;border-radius:17px}
+.loan-entry.loan-finished{opacity:.78}
+.loan-entry-top{display:flex;align-items:start;justify-content:space-between;gap:9px}
+.loan-entry-top>div{min-width:0}
+.loan-entry-top strong{font-size:16px;display:block;overflow-wrap:anywhere}
+.loan-entry-top small{display:block;margin-top:3px;color:#96afba;font-size:11px;line-height:1.5}
+.loan-tag{white-space:nowrap;flex-shrink:0;font-size:10px;border-radius:99px;padding:5px 9px;background:#25535a;color:#bff1d6;font-weight:700}
+.loan-tag.done{background:#293e38;color:#bad8c0}
+.loan-tag.overdue{background:#58352e;color:#ffbaaa}
+.loan-entry-sum{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:13px;font-size:12px;color:#a7c1c9}
+.loan-entry-sum strong{font-size:18px;color:#ffdc92;white-space:nowrap}
+.loan-meta{font-size:11px;color:#99b8be;margin-top:4px}
+.loan-note{margin:9px 0 0;font-size:12px;color:#bfd1d2;overflow-wrap:anywhere}
+.loan-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.loan-actions .btn{min-width:90px;padding:11px 12px;font-size:12px}
+.loan-delete{border:0;background:none;color:#e9a69f;font-size:11px;padding:8px;margin-left:auto;cursor:pointer}
+.loan-installments{display:flex;flex-direction:column;gap:10px;margin-top:24px;border-top:1px solid #36545b;padding-top:20px}
+.loan-installments>span{color:#a9c1c9;font-size:12px}
+.loan-installments .btn{width:100%}
+.loan-back{width:100%;margin-top:18px}
+.report-loan-flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.report-loan-flow>span{background:#173440;border:1px solid #2d535f;padding:10px 12px;border-radius:12px;font-size:11px;color:#bed2d7;flex:1}
+.report-loan-flow b{color:#f6d490}
+@media(max-width:370px){.loan-entry-sum{flex-direction:column;align-items:start;gap:1px}.loan-entry-sum strong{font-size:18px}.loan-entry-top strong{font-size:14px}.loan-actions .btn{flex:1}}
